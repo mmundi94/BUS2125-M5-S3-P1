@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Connected Business Functions Workflow</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #ffffff;
+      font-family: "Poppins", Arial, sans-serif;
+      color: #222222;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1150px;
+      margin: 0 auto;
+    }
+
+    /* INTRO */
+
+    .intro {
+      max-width: 800px;
+      margin: 0 auto 26px;
+      text-align: center;
+    }
+
+    .intro h2 {
+      margin: 0 0 10px;
+      color: #0b5394;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .intro p {
+      margin: 0;
+      color: #4c4c4c;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* MODE SWITCH */
+
+    .mode-switch {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .mode-btn {
+      min-height: 46px;
+      padding: 11px 20px;
+      border-radius: 9px;
+      border: 2px solid #d9d9d9;
+      background: #ffffff;
+      color: #444444;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .mode-btn.active-before {
+      background: #741b47;
+      border-color: #741b47;
+      color: #ffffff;
+    }
+
+    .mode-btn.active-connected {
+      background: #134f5c;
+      border-color: #134f5c;
+      color: #ffffff;
+    }
+
+    .mode-btn:focus-visible,
+    .stage:focus-visible,
+    .nav-btn:focus-visible {
+      outline: 3px solid #FFFF02;
+      outline-offset: 3px;
+    }
+
+    /* SECTION HEADER */
+
+    .workflow-heading {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .workflow-heading .label {
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .workflow-heading .before-label {
+      background: #741b47;
+    }
+
+    .workflow-heading .connected-label {
+      background: #134f5c;
+    }
+
+    /* WORKFLOW */
+
+    .workflow {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .stage {
+      flex: 1;
+      min-width: 0;
+      min-height: 145px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      padding: 17px 10px;
+
+      border: 4px solid transparent;
+      border-radius: 15px;
+
+      font-family: inherit;
+      text-align: center;
+      color: #ffffff;
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    /* BEFORE WORKFLOW */
+
+    .before .stage {
+      background: #741b47;
+    }
+
+    .before .stage:nth-of-type(3) {
+      background: #8c2758;
+    }
+
+    .before .stage:nth-of-type(5) {
+      background: #741b47;
+    }
+
+    .before .stage:nth-of-type(7) {
+      background: #8c2758;
+    }
+
+    .before .stage:nth-of-type(9) {
+      background: #741b47;
+    }
+
+    /* CONNECTED WORKFLOW */
+
+    .connected .stage {
+      background: #134f5c;
+    }
+
+    .connected .stage:nth-of-type(3) {
+      background: #0b5394;
+    }
+
+    .connected .stage:nth-of-type(5) {
+      background: #582fc1;
+    }
+
+    .connected .stage:nth-of-type(7) {
+      background: #134f5c;
+    }
+
+    .connected .stage:nth-of-type(9) {
+      background: #0b5394;
+    }
+
+    .connected .stage:nth-of-type(11) {
+      background: #582fc1;
+    }
+
+    /* CURRENT STAGE */
+
+    .stage.current {
+      border-color: #FFFF02;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    @media (hover: hover) {
+      .stage:hover {
+        transform: translateY(-4px);
+      }
+
+      .stage.current:hover {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* STAGE NUMBER */
+
+    .stage-number {
+      width: 35px;
+      height: 35px;
+      flex: 0 0 35px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 10px;
+
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stage-title {
+      color: #ffffff;
+      font-size: 12.5px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    /* ARROWS */
+
+    .arrow {
+      flex: 0 0 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #134f5c;
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .before .arrow {
+      color: #741b47;
+    }
+
+    /* STAGE DETAIL */
+
+    .detail {
+      max-width: 800px;
+      min-height: 105px;
+
+      margin: 28px auto 0;
+      padding: 20px 22px;
+
+      background: #f6f7f8;
+      border: 1px solid #e1e4e6;
+      border-left: 6px solid #741b47;
+      border-radius: 12px;
+
+      text-align: center;
+    }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #6b6b6b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .detail-text {
+      margin: 0;
+      color: #741b47;
+      font-size: 17px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    /* NAVIGATION */
+
+    .navigation {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .nav-btn {
+      min-height: 44px;
+      padding: 10px 20px;
+
+      border: 0;
+      border-radius: 9px;
+
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .previous-btn {
+      background: #e9ecef;
+      color: #333333;
+    }
+
+    .next-btn {
+      background: #0b5394;
+      color: #ffffff;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    /* OUTCOME */
+
+    .outcome {
+      max-width: 800px;
+      margin: 22px auto 0;
+      padding: 17px 20px;
+
+      border-radius: 11px;
+
+      font-size: 13px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .outcome.before-outcome {
+      background: #f9edf3;
+      border: 1px solid #e7c9d7;
+      color: #4e1731;
+    }
+
+    .outcome.connected-outcome {
+      background: #edf6f7;
+      border: 1px solid #c8dfe3;
+      color: #123f48;
+    }
+
+    .outcome strong {
+      font-weight: 700;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 780px) {
+
+      body {
+        padding: 18px 12px;
+      }
+
+      .mode-switch {
+        flex-direction: column;
+      }
+
+      .mode-btn {
+        width: 100%;
+      }
+
+      .workflow {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .stage {
+        min-height: 74px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 13px;
+        padding: 13px 15px;
+        text-align: left;
+      }
+
+      .stage.current {
+        transform: none;
+      }
+
+      .stage-number {
+        margin: 0;
+      }
+
+      .stage-title {
+        font-size: 13px;
+      }
+
+      .arrow {
+        height: 20px;
+        flex: none;
+        transform: rotate(90deg);
+      }
+
+      .detail {
+        min-height: 110px;
+        margin-top: 22px;
+        padding: 18px 16px;
+      }
+
+      .detail-text {
+        font-size: 15px;
+      }
+
+      .navigation {
+        width: 100%;
+      }
+
+      .nav-btn {
+        flex: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stage,
+      .mode-btn {
+        transition: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<main class="container">
+
+  <section class="intro">
+    <h2>Information Flow Across Business Functions</h2>
+    <p>
+      Consider a retailer preparing a major product promotion.
+    </p>
+  </section>
+
+
+  <!-- SWITCH -->
+
+  <div class="mode-switch">
+
+    <button
+      type="button"
+      class="mode-btn active-before"
+      id="beforeBtn"
+    >
+      Before Functions Are Digitally Connected
+    </button>
+
+    <button
+      type="button"
+      class="mode-btn"
+      id="connectedBtn"
+    >
+      When Information Moves Across Functions
+    </button>
+
+  </div>
+
+
+  <!-- HEADING -->
+
+  <div class="workflow-heading">
+    <span
+      class="label before-label"
+      id="workflowLabel"
+    >
+      Before functions are digitally connected:
+    </span>
+  </div>
+
+
+  <!-- WORKFLOW -->
+
+  <div
+    class="workflow before"
+    id="workflow"
+  >
+  </div>
+
+
+  <!-- CURRENT STAGE -->
+
+  <section
+    class="detail"
+    id="detail"
+    aria-live="polite"
+  >
+
+    <span
+      class="detail-label"
+      id="detailLabel"
+    >
+      Stage 1 of 5
+    </span>
+
+    <p
+      class="detail-text"
+      id="detailText"
+    >
+      Marketing launches promotion
+    </p>
+
+  </section>
+
+
+  <!-- NAVIGATION -->
+
+  <div class="navigation">
+
+    <button
+      type="button"
+      class="nav-btn previous-btn"
+      id="previousBtn"
+    >
+      ← Previous
+    </button>
+
+    <button
+      type="button"
+      class="nav-btn next-btn"
+      id="nextBtn"
+    >
+      Next Stage →
+    </button>
+
+  </div>
+
+
+  <!-- OUTCOME -->
+
+  <div
+    class="outcome before-outcome"
+    id="outcome"
+  >
+    Marketing may have achieved its campaign target while the overall customer experience suffered.
+  </div>
+
+</main>
+
+
+<script>
+
+  const workflows = {
+
+    before: {
+
+      label:
+        "Before functions are digitally connected:",
+
+      stages: [
+        "Marketing launches promotion",
+        "Demand increases",
+        "Operations notices inventory decline",
+        "Stockout occurs",
+        "Customer service receives complaints"
+      ],
+
+      outcome:
+        "Marketing may have achieved its campaign target while the overall customer experience suffered."
+
+    },
+
+    connected: {
+
+      label:
+        "Now consider the same situation when information moves across functions before the promotion begins:",
+
+      stages: [
+        "Marketing shares promotion plan",
+        "Operations adjusts demand forecast",
+        "Finance reviews inventory requirements",
+        "Stock levels are adjusted",
+        "Promotion launches",
+        "Customer service sees current availability"
+      ]
+
+    }
+
+  };
+
+
+  const workflow =
+    document.getElementById("workflow");
+
+  const workflowLabel =
+    document.getElementById("workflowLabel");
+
+  const detail =
+    document.getElementById("detail");
+
+  const detailLabel =
+    document.getElementById("detailLabel");
+
+  const detailText =
+    document.getElementById("detailText");
+
+  const outcome =
+    document.getElementById("outcome");
+
+  const beforeBtn =
+    document.getElementById("beforeBtn");
+
+  const connectedBtn =
+    document.getElementById("connectedBtn");
+
+  const previousBtn =
+    document.getElementById("previousBtn");
+
+  const nextBtn =
+    document.getElementById("nextBtn");
+
+
+  let currentMode = "before";
+  let currentStage = 0;
+
+
+  function buildWorkflow() {
+
+    const data = workflows[currentMode];
+
+    workflow.innerHTML = "";
+
+    workflow.className =
+      "workflow " + currentMode;
+
+
+    data.stages.forEach((stage, index) => {
+
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+
+      button.className =
+        "stage";
+
+      button.dataset.index =
+        index;
+
+      button.setAttribute(
+        "aria-label",
+        `Stage ${index + 1}: ${stage}`
+      );
+
+
+      const number =
+        document.createElement("span");
+
+      number.className =
+        "stage-number";
+
+      number.textContent =
+        index + 1;
+
+
+      const title =
+        document.createElement("span");
+
+      title.className =
+        "stage-title";
+
+      title.textContent =
+        stage;
+
+
+      button.appendChild(number);
+      button.appendChild(title);
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          currentStage = index;
+          updateStage();
+
+        }
+      );
+
+
+      workflow.appendChild(button);
+
+
+      if (
+        index <
+        data.stages.length - 1
+      ) {
+
+        const arrow =
+          document.createElement("div");
+
+        arrow.className =
+          "arrow";
+
+        arrow.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+        arrow.textContent =
+          "→";
+
+        workflow.appendChild(arrow);
+
+      }
+
+    });
+
+
+    updateStage();
+
+  }
+
+
+  function updateStage() {
+
+    const data =
+      workflows[currentMode];
+
+    const stageButtons =
+      workflow.querySelectorAll(".stage");
+
+
+    stageButtons.forEach(
+      (button, index) => {
+
+        const isCurrent =
+          index === currentStage;
+
+        button.classList.toggle(
+          "current",
+          isCurrent
+        );
+
+        button.setAttribute(
+          "aria-pressed",
+          isCurrent ? "true" : "false"
+        );
+
+      }
+    );
+
+
+    detailLabel.textContent =
+      `Stage ${currentStage + 1} of ${data.stages.length}`;
+
+    detailText.textContent =
+      data.stages[currentStage];
+
+
+    if (currentMode === "before") {
+
+      detail.style.borderLeftColor =
+        "#741b47";
+
+      detailText.style.color =
+        "#741b47";
+
+    } else {
+
+      detail.style.borderLeftColor =
+        "#134f5c";
+
+      detailText.style.color =
+        "#134f5c";
+
+    }
+
+
+    previousBtn.disabled =
+      currentStage === 0;
+
+
+    if (
+      currentStage ===
+      data.stages.length - 1
+    ) {
+
+      nextBtn.textContent =
+        "Workflow Complete ✓";
+
+      nextBtn.disabled =
+        true;
+
+    } else {
+
+      nextBtn.textContent =
+        "Next Stage →";
+
+      nextBtn.disabled =
+        false;
+
+    }
+
+  }
+
+
+  function setMode(mode) {
+
+    currentMode = mode;
+    currentStage = 0;
+
+    const data =
+      workflows[mode];
+
+
+    workflowLabel.textContent =
+      data.label;
+
+
+    if (mode === "before") {
+
+      beforeBtn.className =
+        "mode-btn active-before";
+
+      connectedBtn.className =
+        "mode-btn";
+
+      workflowLabel.className =
+        "label before-label";
+
+      outcome.style.display =
+        "block";
+
+      outcome.className =
+        "outcome before-outcome";
+
+      outcome.textContent =
+        data.outcome;
+
+    } else {
+
+      beforeBtn.className =
+        "mode-btn";
+
+      connectedBtn.className =
+        "mode-btn active-connected";
+
+      workflowLabel.className =
+        "label connected-label";
+
+      outcome.style.display =
+        "none";
+
+    }
+
+
+    buildWorkflow();
+
+  }
+
+
+  previousBtn.addEventListener(
+    "click",
+    () => {
+
+      if (currentStage > 0) {
+
+        currentStage--;
+        updateStage();
+
+      }
+
+    }
+  );
+
+
+  nextBtn.addEventListener(
+    "click",
+    () => {
+
+      const total =
+        workflows[currentMode]
+          .stages.length;
+
+      if (
+        currentStage <
+        total - 1
+      ) {
+
+        currentStage++;
+        updateStage();
+
+      }
+
+    }
+  );
+
+
+  beforeBtn.addEventListener(
+    "click",
+    () => setMode("before")
+  );
+
+
+  connectedBtn.addEventListener(
+    "click",
+    () => setMode("connected")
+  );
+
+
+  buildWorkflow();
+
+</script>
+
+</body>
+</html>
